@@ -1,0 +1,136 @@
+env:
+  global:
+    - DIST_DIR="${PWD}/dist"
+    - PROJECT_NAME=$(basename ${PWD})
+    - ARTIFACT="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}.zip"
+    - S3_BUCKET_PREFIX="serverlessops-deploy"
+    - S3_BUCKET_DEV="${S3_BUCKET_PREFIX}-training-dev"
+    - S3_BUCKET_PROD="${S3_BUCKET_PREFIX}-training-prod"
+    - AWS_REGION=us-east-1
+    # AWS_ACCESS_KEY_ID_DEV
+    - secure: BuKWUydDe683j9jGf8EcUhu7E0XSBr26q8UX8xzy9qjF7RwuhhsvAdbwavqTgeB7AUdKYznkL7F0DQ6Z3Cjk5DreRXMCsWRl6or1EjWwSXtfw0f/PvoCqnduMlOM3op19764iop3hezBh2mS27jXjG/3kPiKHJQcVCctyMXKJc+8PnUFYaY/X6eB7nCbeLbzG+5EdvHto9zw9A/9uo5NKOpxGVC0E+le99DOe0TOWUh+BUa063UtbnbTil3zwu6JdviQXrdGCOD2dqQhvamwXfB1jYDhZHsy56sItWw6IquSndzN1ZtCezutDQ3JRReoKfg3jbUQaHMpg/wfDkI0WN12G3ta4vFE+LkPMqOxr/gcgtN08GP3fZkt7oCdeUHokTx6wvunReC00NsUsQZoIPaDgptd5lV1tT4aQhtrAlkTKt9Bc5/fw488aXK5vX5lQwLvnUWAwGQdsI2EREKmINCU6FwrsvhOJbPzwtAQZhzeMyKqsIsj1X19R2CuLGcG09weN4bcTec0yocbt9rysNPIuScVFnxf2zh72G9hk6Fa6/gAOXTaeqKGZPQ8Aq/SsxGjzdyWTXhUm72UwokmxqurUK60pHkddUmdgp7Fra6cVECqS4F5IBTwJ9E/50NfVGbBfVmDVUU/ldPOcEHNZ0pDfv2n3qS/4LJpJHkDjd0=
+    # AWS_SECRET_ACCESS_KEY_DEV
+    - secure: rbAs7c2r3ECoTx6oD18y/UazbIfcb2D0j1R3y3hAc6E1EUF7XAnMMMGVu2ZQptpkERphe10lfLCtIFrP3a6D4OFjIkuBoup8tVRicChMsp8iVIaudpC1YfeXECyrcIWB6RN1Spbih4/1l+mAyv1QptAgQLAHUVZBtYawdpSxzIGHDOIpWDEpzt7OSFE0ThxzSB9209MMMoTBiiwRKF/8Y8h0R/VeH4Y+HIMy5LOR8yaN8auFT9YmfoNAK5rsd80aIcs0xFtWIONi+2eLrvlsCYB3dRkRP2t/j50bmhOezZtl5wdMLDaZjWghkIFibjew9KvtmLp5NY+6LVLGDkwdfz6u0TwQxykPis2yRMkCiHJyEJBkLxQTcyUijFsnWN1kwq/CRQF63cOdVpGVvIIwXJbBprCSjlYPcNGb7oN3/yZON5LCd/kGd2uz+FGVqrMSeqlnSXENSwP+0jG2KrgGiSgoHRxU3YtwMq8zHL7LLqx3/ZzmddM51qxNchFrCTDBRe4uOz1voKo7rRvD5Qn52rI+XsjXaSgBz6nu4tJOQ975dF6+gmezJTU3cfNN60/3KUak/LPRueXzId/IVemBBA2VPLq2iNQx13FszhxHg12hObxcMpXrAfmSBl/8tfVvgx7HQJpZFIeh7Wscz6fwiYIcUv9bpwSU3GWmee8pTwo=
+    # AWS_ACCESS_KEY_ID_PROD
+    - secure: aZm0inZVUBijRSqjKSywOWEW37D/25HZQrVdVlj4xakOB4YvN67bSmnAGk76kpXxvyeV9lRYpQqWkyeyk2W17DFswnFSy59EJoS9ycFHzUudMbnsdT9t0NuHtmTTUCZtMA2/Us5OO92uEovFOjY0YO8XCfctrcBQqYUjG7BfzW5/KtFKqpdEYkvwWgddpf4a5+NUURkL8xopxEMd+Aok6yYYWreYeUHDAsSyY+v3FQ2v5OphMsbviob+pXXD7Gs4rmTxOC0/WdVrKe6OBl3bMZTeqQJYUO/xN2EtF8gnB0lx6zwyHpKMT8suqiQ3sP6MbPX6NMGhv5mIdNhlh4YjTOqk8YvHm3PcCHmBxCkBBYBnVZnW2DAZhZY8482RYlZbkKzlaxAtUAFau7cl4EaK8NLkCezEu/9BWRXQe5XgG+2WN/53JCbBPpelI7yRmeN+0z84YgkzBrK+nT5opxOmUA7xUasI8icZqG4n0q3HMIwrWSGD4PHDMVAUzbaCHzShLe+Rbzdfi6yfj3uigtWaQn7OBxE87iGk1T5EmPcHz7Nhc0lpL3yD2RPu3inB1vMsid/43//tyln45+ZC5hQSH6ifwwmDv/dM/bRlltJGKNQnF1/u6OCTCdxJnMX3ckGTfo+cqbY1YsFdoNQkYnffGrifu875q6wnJzd3S0oiCq0=
+    # AWS_SECRET_ACCESS_KEY_PROD
+    - secure: G7Q1EC2f7ftkUL3a7eFvJDA5/fQRBOxj7T3BlngiP2Aefb88gw9ztUNtP9W4z8+rO67qd9Idy92mdqFjZ4sP3WwSrJUSANNZNYCqCNHbad8KC+EuUGea4sMUTfoesiXXMbX2MKJrvy1BsZuboPzS1zU/dYxuoAf796WZDhCkSOliTsF91S+VlPofe0N5koOfCT9m0t+jPnf1db5Dlnfsb5U8wDHASBAF92kYJw+44YbuAY4Ntn/jVBDJE0THjcTdztuufaChSgXjQn2/JmxDetdLnZktgiR7nDep0BWMEzdI7KK8TbVIyE5CipEJxv6gptZX4XcehAuedJwAmN86VJ8MN1MJfZWTf+Kews5gcb+GLeTnWm1t8q7JWTNhqek7ykJfMXfetb+DnqP/8BEXhUgehvAPtwlbyNDwuTP4Gq4+H5cBBndBrL5iaZ4LaKszk3iH1GpSn9/wL8J8L7Kl5Nqyjb+kRJ21lmGVBmND7e20XSyrYj+gjLe9GYbvD7cM2QprZZ0HPpDdtjtDGDdx6ynK3vksv4m/cRLJYfrXTOL2uf1lqQT0NZgMgEXeYutxQO6dl0Y9MrJy3xc7vfRceDIHatC+m7/0+VgpulVrkqSOoyrwGXZjLCYWnBZmv6L90EdprHWG+p+/PzaIBfYtpJkDsm9T5V7hlIBFnm7//EA=
+
+stages:
+  - build
+  # We can take the PR conditional out when we get to a point of deploying
+  # to an environment to do integration testing.
+  - name: deploy-dev
+    if: branch = master AND type != pull_request
+  - name: promote-to-prod
+    if: branch = master AND type != pull_request
+  - name: deploy-prod
+    if: branch = master AND type != pull_request
+
+jobs:
+  include:
+    - stage: build
+      sudo: required
+      services:
+        - docker
+      language: python
+      python: '3.6'
+      install:
+        - npm install -g serverless
+        - npm install
+        - pip install awscli
+        - aws configure set default.region $AWS_REGION
+        - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEV
+        - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEV
+      script:
+        # The stage here doesn't really matter. We just want to ensure that
+        # template is valid and assemble our dependencies.
+        - sls package -v -s deploy -r ${AWS_REGION}
+      after_script:
+        # Ensure our creds are cleaned up.
+        - rm -rf ~/.aws
+      before_deploy:
+        - mkdir $DIST_DIR
+        - zip -r dist/${ARTIFACT} ./ -x '*.git*' -x $DIST_DIR
+      deploy:
+        - provider: s3
+          skip_cleanup: true
+          bucket: "${S3_BUCKET_DEV}"
+          upload_dir: "${PROJECT_NAME}"
+          local_dir: "$DIST_DIR"
+          acl: private
+          access_key_id: "$AWS_ACCESS_KEY_ID_DEV"
+          secret_access_key: "$AWS_SECRET_ACCESS_KEY_DEV"
+
+    - stage: deploy-dev
+      sudo: required
+      services:
+        - docker
+      language: python
+      python: '3.6'
+      install:
+        - pip install awscli
+        # Our SLS setup expects to find an AWS profile so let's just manage
+        # our creds this way.
+        - aws configure set default.region $AWS_REGION
+        - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEV
+        - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEV
+        - npm install -g serverless
+      script:
+        - aws s3 cp "s3://${S3_BUCKET_DEV}/${PROJECT_NAME}/${ARTIFACT}" ./
+        - mkdir ${DIST_DIR}
+        - unzip -q ${ARTIFACT} -d ${DIST_DIR}
+        - cd ${DIST_DIR}
+        # We have to use `sls deploy` without the package argument because
+        # otherwise the zone name is already resolved.
+        - export SLS_HOSTED_ZONE_NAME=dev.training.serverlessops.io
+        - sls deploy -v
+      after_script:
+        # Ensure our creds are cleaned up.
+        - rm -rf ~/.aws
+
+    - stage: promote-to-prod
+      language: python
+      python: '3.6'
+      install:
+        - pip install awscli
+        # Our SLS setup expects to find an AWS profile so let's just manage
+        # our creds this way.
+        - aws configure set default.region $AWS_REGION
+      script:
+        # fetch from Dev
+        - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEV
+        - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEV
+        - aws s3 cp "s3://${S3_BUCKET_DEV}/${PROJECT_NAME}/${ARTIFACT}" ./
+        # Send to prod
+        - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_PROD
+        - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_PROD
+        - aws s3 cp "${ARTIFACT}" "s3://${S3_BUCKET_PROD}/${PROJECT_NAME}/"
+
+    - stage: deploy-prod
+      sudo: required
+      services:
+        - docker
+      language: python
+      python: '3.6'
+      install:
+        - pip install awscli
+        # Our SLS setup expects to find an AWS profile so let's just manage
+        # our creds this way.
+        - aws configure set default.region $AWS_REGION
+        - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_PROD
+        - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_PROD
+        - npm install -g serverless
+      script:
+        - aws s3 cp "s3://${S3_BUCKET_PROD}/${PROJECT_NAME}/${ARTIFACT}" ./
+        - mkdir ${DIST_DIR}
+        - unzip -q ${ARTIFACT} -d ${DIST_DIR}
+        - cd ${DIST_DIR}
+        # We have to use `sls deploy` without the package argument because
+        # otherwise the zone name is already resolved.
+        - export SLS_HOSTED_ZONE_NAME=prod.training.serverlessops.io
+        - sls deploy -v -s prod
+      after_script:
+        # Ensure our creds are cleaned up.
+        - rm -rf ~/.aws
+
