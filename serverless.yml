@@ -97,3 +97,10 @@ resources:
           - Arn
       Export:
         Name: "${self:service}-${self:provider.stage}-UserPoolArn"
+
+    UserPoolClientId:
+      Description: ID of Cognito Pool Client
+      Value:
+        Ref: UserPoolClient
+      Export:
+        Name: "${self:service}-${self:provider.stage}-UserPoolclientId"
