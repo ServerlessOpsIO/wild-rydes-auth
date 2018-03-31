@@ -3,20 +3,18 @@
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 [![Build Status](https://travis-ci.org/ServerlessOpsIO/wild-rydes-auth.svg?branch=master)](https://travis-ci.org/ServerlessOpsIO/wild-rydes-auth)
 
-Creates a Python 3.6 Serverless Framework project for AWS.
+Creates the Wild Rydes authentication and authorization service.  This is powered by [AWS Cognito](https://aws.amazon.com/cognito/) to handle signup and authentication.
 
-Sets up a project with ServerlessOps project conventions. These conventions include:
+## Resources
 
-* AWS profile handling
-* stage handling
-* Python conventions
-  * directory layout
-  * logging
+This will create:
+* Cognito User Pool
+* Cognito Client ID
+* Lambda Function (For updating Wild Rydes website auth configuration)
 
-## Usage
-To use, provide the url to this repository when creating a project.
+## Outputs
 
-```
-sls create -u https://github.com/ServerlessOpsIO/sls-aws-python-36 -p <PATH> -n <NAME>
-```
+__UserPoolId:__ ID of user pool that to handle user management for Wild Rydes.
+
+__UserPoolClientId:__ Client ID for website to access user pool.
 
